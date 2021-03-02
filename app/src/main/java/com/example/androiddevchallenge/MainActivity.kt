@@ -18,6 +18,8 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,8 +29,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +42,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                SimpleList()
+                //MyApp()
             }
         }
     }
@@ -71,23 +78,46 @@ fun DarkPreview() {
 @Composable
 fun SimpleList() {
     val scrollState = rememberScrollState()
-    Column(Modifier.verticalScroll(scrollState)) {
-        repeat(100) {
+    Column(
+        Modifier
+            .verticalScroll(scrollState)
+    ) {
+
+        val dogs = DogRepository()
+        repeat(5) {
             //Text("Item #$it")
-            ImageListItem(index = it)
+
+            ImageListItem(dogs.list, it)
         }
     }
 }
 
 @Composable
-fun ImageListItem(index: Int) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        CoilImage(
-            data = "https://developer.android.com/images/brand/Android_Robot.png",
-            contentDescription = "Android Logo",
-            modifier = Modifier.size(50.dp)
+fun ImageListItem(list: List<Dog>, index: Int) {
+    val context = LocalContext.current
+    Row(Modifier.clickable {
+        val intent = DetailActivity.createIntent(context, index)
+        context.startActivity(intent)
+    }) {
+        Image(
+            painterResource(id = list.get(index).image),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(150.dp)
         )
         Spacer(Modifier.width(10.dp))
-        Text("Item #$index", style = MaterialTheme.typography.subtitle1)
+        val name = list.get(index).name
+        val age = list.get(index).age
+        Column {
+            Text("Name $name", style = MaterialTheme.typography.subtitle1)
+            Text("Age  $age")
+        }
+
     }
+}
+
+@Preview
+@Composable
+fun prev() {
+    SimpleList()
 }
