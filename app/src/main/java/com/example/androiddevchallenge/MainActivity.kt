@@ -22,11 +22,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-
-
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -68,10 +66,12 @@ fun SimpleList() {
 @Composable
 fun ImageListItem(list: List<Dog>, index: Int) {
     val context = LocalContext.current
-    Row(Modifier.clickable {
-        val intent = DetailActivity.createIntent(context, index)
-        context.startActivity(intent)
-    }) {
+    Row(
+        Modifier.clickable {
+            val intent = DetailActivity.createIntent(context, index)
+            context.startActivity(intent)
+        }
+    ) {
         Image(
             painterResource(id = list.get(index).image),
             contentDescription = null,
@@ -85,7 +85,6 @@ fun ImageListItem(list: List<Dog>, index: Int) {
             Text("Name $name", style = MaterialTheme.typography.subtitle1)
             Text("Age  $age")
         }
-
     }
 }
 

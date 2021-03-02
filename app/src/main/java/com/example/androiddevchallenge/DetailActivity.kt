@@ -56,10 +56,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
-
-
 }
-
 
 @Composable
 fun Detail(dog: Dog) {
@@ -72,7 +69,5 @@ fun Detail(dog: Dog) {
         )
         Text("Name ${dog.name}")
         Text("Descritption ${dog.descript}")
-
     }
-
 }
